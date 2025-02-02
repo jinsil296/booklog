@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.booklog.mapper.BooklogMapper">
+    <select id="selectBooklogList" resultType="com.booklog.dto.BooklogDto">
+        SELECT
+            book_id,
+            title,
+            contents,
+            author,
+            publisher,
+            published_date,
+            isbn,
+            description,
+            created_at,
+            updated_at
+        FROM
+            BOOKS
+        ORDER BY book_id DESC
+    </select>
+
+    <insert id="insertBooklog" parameterType="com.booklog.dto.BooklogDto"
+        useGeneratedKeys="true" keyProperty="bookId">
+        INSERT INTO BOOKS (
+            title,
+            contents,
+            author,
+            publisher,
+            published_date,
+            isbn,
+            <!-- description, -->
+            created_at
+        ) VALUES (
+            #{title},
+            #{contents},
+            #{author},
+            #{publisher},
+            #{publishedDate},
+            #{isbn},
+            <!-- #{description}, -->
+            NOW()
+        )
+    </insert>
+
+    <insert id="insertBooklogFileList" parameterType="com.booklog.dto.BooklogFileDto">
+        INSERT INTO BookImages
+        (
+            book_id,
+            original_file_name,
+            stored_file_path,
+            file_size,
+            created_dt
+        )
+        VALUES 
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.bookId},
+                #{item.originalFileName},
+                #{item.storedFilePath},
+                #{item.fileSize},
+                now()
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectBooklogFileList" parameterType="int" resultType="com.booklog.dto.BooklogFileDto">
+        SELECT
+            idx,
+            book_id,
+            original_file_name,
+            stored_file_path,
+            format(round(file_size/1024), 0) as file_size
+        FROM
+            BookImages
+        WHERE
+            book_id = #{bookId}
+    </select>
+
+    <select id="selectBooklogFileInfo" parameterType="map" resultType="com.booklog.dto.BooklogFileDto">
+        SELECT
+            original_file_name,
+            stored_file_path,
+            file_size
+        FROM
+            BookImages
+        WHERE
+            idx = #{idx} AND book_id = #{bookId}
+    </select>
+
+    <select id="selectBooklog" resultType="com.booklog.dto.BooklogDto">
+        SELECT
+            book_id,
+            title,
+            contents,
+            author,
+            publisher,
+            published_date,
+            isbn,
+            description,
+            created_at,
+            updated_at
+        FROM
+            BOOKS
+        WHERE
+            book_id = #{bookId}
+    </select>
+
+    <update id="updateBooklog" parameterType="com.booklog.dto.BooklogDto">
+        UPDATE BOOKS SET
+            title = #{title},
+            contents = #{contents},
+            updated_at = NOW()
+        WHERE
+            book_id = #{bookId}
+    </update>
+
+    <delete id="deleteBooklog">
+        DELETE FROM BOOKS WHERE book_id = #{bookId}
+    </delete>
+</mapper>

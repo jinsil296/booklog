@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>감상문</title>
+    <link rel="stylesheet" th:href="@{/css/board.css}" />
+</head>
+<body>
+    <div class="container">
+        <h2>감상문 등록</h2>
+        <form id="frm" method="post" action="/booklog/insertBooklog.do" enctype="multipart/form-data">
+	        <table class="board_detail">
+	            <tr>
+	               <td>제목</td>
+	               <td colspan="3"><input type="text" id="title" name="title" /></td>
+				   <td>ISBN 번호</td>
+				   <td colspan="2"><input type="text" id="isbn" name="isbn" /></td>
+	            </tr>
+				<tr>
+					<td>저자</td>
+					<td><input type="text" id="author" name="author" /></td>
+					<td>출판사</td>
+					<td><input type="text" id="publisher" name="publisher" /></td>
+					<td>출판일</td>
+					<td><input type="date" id="publishedDate" name="publishedDate" /></td>
+				</tr>
+	            <tr>
+					<td>내용</td>
+					<td colspan="5"><textarea id="contents" name="contents"></textarea></td>	               
+	            </tr>
+	        </table>
+	        <input type="file" id="files" name="files" multiple="multiple" />
+	        <input type="submit" id="submit" value="저장" class="btn" />
+	    </form>
+    </div>
+</body>
+</html>
