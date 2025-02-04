@@ -15,7 +15,7 @@ public class ErrorHandler {
         ModelAndView mv = new ModelAndView("/error/default");
         mv.addObject("exception", exception);
         mv.addObject("request", request);
-        log.error("exception >>> ", exception);
+        log.error("exception >> ", exception);
         return mv;
     }
 }
